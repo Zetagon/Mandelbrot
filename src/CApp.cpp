@@ -25,12 +25,14 @@ CApp::~CApp()
 }
 
 void CApp::OnDefault(){
+    bool useOrbitTrap = false;
+
     std::complex<long double> Z(0.0,0.0);
-    long double tempX = 0;//-0.743643887037151;
-    long double tempY = 0;//0.131825904205330;
-    std::cout << "Enter the value of the X-coordinate please:";
+    long double tempX = -0.743643887037151;//-0.743643887037151;
+    long double tempY = 0.131825904205330;//0.131825904205330;
+//    std::cout << "Enter the value of the X-coordinate please:";
     //std::cin >> tempX;
-    std::cout << "Enter the value of the Y-coordinate please:";
+//    std::cout << "Enter the value of the Y-coordinate please:";
     //std::cin >> tempY;
     std::complex<long double> offset(tempX,tempY);
 
@@ -40,7 +42,12 @@ void CApp::OnDefault(){
     long double width = 2;//M0.000000000051299;
     long double height = (double)screen.h / screen.w * width;
         Mandelbrot brot(width, height, resolution,p,Main_Renderer,Z,offset);
-        SDL_Texture* Tex = brot.DrawTexture(Main_Renderer);
+        SDL_Texture* Tex;
+        if(useOrbitTrap)
+            Tex = brot.OrbitTrap(Main_Renderer);
+        else
+            Tex = brot.DrawTexture(Main_Renderer);
+
         SDL_RenderCopy(Main_Renderer, Tex, NULL, NULL);
         SDL_RenderPresent(Main_Renderer);
 
@@ -58,16 +65,23 @@ void CApp::OnDefault(){
 
 
             if(keystates[SDL_SCANCODE_W]){
-                scrollModifierY+= 10;
+                Tex = brot.moveOffset(Main_Renderer,0,1);
             }
             if(keystates[SDL_SCANCODE_S]){
-                scrollModifierY-= 10;
+                Tex = brot.moveOffset(Main_Renderer,0,-1);
             }
             if(keystates[SDL_SCANCODE_A]){
-                scrollModifierX+= 10;
+                Tex = brot.moveOffset(Main_Renderer,-1 ,0);
             }
             if(keystates[SDL_SCANCODE_D]){
-                scrollModifierX -= 10;
+                Tex = brot.moveOffset(Main_Renderer,1 ,0);
+            }
+            if(keystates[SDL_SCANCODE_O]){
+                if(useOrbitTrap)
+                    useOrbitTrap = false;
+                else
+                    useOrbitTrap = true;
+                SDL_Delay(200);
             }
             if(keystates[SDL_SCANCODE_LEFT]){
                 angle += 5;
@@ -85,18 +99,62 @@ void CApp::OnDefault(){
                 brot.increaseRes(1/1.5);
                 SDL_Delay(200);
             }
+            if(keystates[SDL_SCANCODE_RETURN]){
+                int texW;
+                int texH;
+                SDL_QueryTexture(Tex,NULL,NULL,&texW,&texH);
+                int winW;
+                int winH;
+                SDL_GetWindowSize(window,&winW,&winH);
+                if (winW == texW && winH == texH){
+                    SDL_SetWindowSize(window,screen.w,screen.h);
+                }
+                else{
+                    SDL_SetWindowSize(window,texW,texH);
+                }
+                SDL_Delay(200);
+            }
             if(keystates[SDL_SCANCODE_UP]){
-                    Tex = brot.zoom(1/1.1, Main_Renderer);
+                while(keystates[SDL_SCANCODE_UP]){
+                    Tex = brot.zoom(1/1.02, Main_Renderer);
+
+                     SDL_SetRenderTarget(Main_Renderer, NULL);
+                    SDL_RenderClear(Main_Renderer);
+                    SDL_RenderCopyEx(Main_Renderer,Tex,NULL,NULL,angle,NULL, SDL_FLIP_VERTICAL);
+                    SDL_RenderPresent(Main_Renderer);
+
+                    SDL_PumpEvents();
+                }
+                if(useOrbitTrap)
+                    Tex = brot.OrbitTrap(Main_Renderer);
+                else
+                    Tex = brot.DrawTexture(Main_Renderer);
+
             }
             if(keystates[SDL_SCANCODE_DOWN]){
-                    Tex  = brot.zoom(1.1, Main_Renderer);
+                while(keystates[SDL_SCANCODE_DOWN]){
+                    Tex = brot.zoom(1.02, Main_Renderer);
 
+                     SDL_SetRenderTarget(Main_Renderer, NULL);
+                    SDL_RenderClear(Main_Renderer);
+                    SDL_RenderCopyEx(Main_Renderer,Tex,NULL,NULL,angle,NULL, SDL_FLIP_VERTICAL);
+                    SDL_RenderPresent(Main_Renderer);
+
+                    SDL_PumpEvents();
+                }
+                if(useOrbitTrap)
+                    Tex = brot.OrbitTrap(Main_Renderer);
+                else
+                    Tex = brot.DrawTexture(Main_Renderer);
             }
             if (keystates[SDL_SCANCODE_ESCAPE]){
                 running = false;
             }
             if (keystates[SDL_SCANCODE_R]){
-                Tex = brot.DrawTexture(Main_Renderer);
+                if(useOrbitTrap)
+                    Tex = brot.OrbitTrap(Main_Renderer);
+                else
+                    Tex = brot.DrawTexture(Main_Renderer);
                 SDL_Delay(200);
             }
             if(keystates[SDL_SCANCODE_P]){
@@ -109,8 +167,11 @@ void CApp::OnDefault(){
                 SDL_Delay(200);
             }
             if(keystates[SDL_SCANCODE_SPACE]){
-                brot.offsetToMousePos();
-                Tex = brot.DrawTexture(Main_Renderer);
+                brot.offsetToMousePos(window);
+                if(useOrbitTrap)
+                    Tex = brot.OrbitTrap(Main_Renderer);
+                else
+                    Tex = brot.DrawTexture(Main_Renderer);
                 SDL_Delay(500);
             }
 
@@ -121,13 +182,7 @@ void CApp::OnDefault(){
                 SDL_SetRenderTarget(Main_Renderer, NULL);
                 SDL_RenderClear(Main_Renderer);
 
-                SDL_Rect DestR = {scrollModifierX-+screen.w *zoomModifier,
-                scrollModifierY - screen.h * zoomModifier,
-                screen.w + 2*screen.w * zoomModifier,
-                screen.h + 2*screen.h * zoomModifier
-                };
                 SDL_RenderCopyEx(Main_Renderer,Tex,NULL,NULL,angle,NULL, SDL_FLIP_VERTICAL);
-    //           SDL_RenderCopy(Main_Renderer,srcTex,NULL,&DestR);
                 SDL_RenderPresent(Main_Renderer);
             }
                 SDL_PumpEvents();

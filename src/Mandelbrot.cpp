@@ -25,10 +25,14 @@ Mandelbrot::Mandelbrot(long double width,
     h = mathematicalH / unit;
     originalH = h;
     offset = pOffset;
+    textureOffset = offset;
     std::vector<long int> temp2(2*h);
     for(int x = 0; x < 2*w; x++){
         iterations.push_back(temp2);
     }
+    std::complex<long double> tempC(-2,2);
+    orbitTrapPoint = tempC;
+
     SDL_GetDisplayBounds(0,&screen);
 
 }
@@ -59,16 +63,25 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
             iterations.at(x + w).at(y + h) = n;
         }
     }
+    int highestIteration = MAX_ITERATIONS;
+//    int i = MAX_ITERATIONS - 1;
+//    while(Histogram.at(i) = 0 && i > 0){
+//        i -= 1;
+//    }
+//    std::cout << "i is:" << i;
+//    std::cout << "i is:" << Histogram.at(MAX_ITERATIONS - 2);
+//    std::cout << "max is:" << MAX_ITERATIONS;
+//    highestIteration = i;
     std::vector<int> bandlimits;
     bandlimits.push_back(1);//will always be 1
 //    bandlimits.push_back(MAX_ITERATIONS * 0.24);
-    bandlimits.push_back(MAX_ITERATIONS * 0.16);
-    bandlimits.push_back(MAX_ITERATIONS * 0.42);
-    bandlimits.push_back(MAX_ITERATIONS * 0.6425);
-    bandlimits.push_back(MAX_ITERATIONS * 0.8575);
-//    bandlimits.push_back(MAX_ITERATIONS * 0.8);
-//    bandlimits.push_back(MAX_ITERATIONS * 0.9);
-    bandlimits.push_back(MAX_ITERATIONS);
+    bandlimits.push_back(highestIteration * 0.16);
+    bandlimits.push_back(highestIteration * 0.42);
+    bandlimits.push_back(highestIteration * 0.6425);
+    bandlimits.push_back(highestIteration * 0.8575);
+//    bandlimits.push_back(highestIteration * 0.8);
+//    bandlimits.push_back(highestIteration * 0.9);
+    bandlimits.push_back(highestIteration);
     std::vector<long double> percents(MAX_ITERATIONS);
     for(int a = 1; a < bandlimits.size(); a++){
         int band_total = 0;
@@ -104,12 +117,16 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
 //        running_total += Histogram.at(i);
 //        percents.at(i) = (long double)running_total/band_total;
 //    }
-
+    std::vector<int> rValue;
+    std::vector<int> gValue;
+    std::vector<int> bValue;
+    //first colour
+    rValue.push_back(32);
     for(int x = -w; x < w; x++){
         for(int y = -h; y < h; y++){
             int n = iterations.at(x + w).at(y + h);
             if(n > bandlimits.at(0) && n<bandlimits.at(1)){
-                r = 32 * percents.at(n);//155 * percents.at(n)+ 100;
+                r = 32 * (1 - percents.at(n));//155 * percents.at(n)+ 100;
                 g = 7 * (1.0 - percents.at(n)) + 107 * percents.at(n);
                 b = 100 * (1.0 - percents.at(n)) + 203 * percents.at(n) ;
                 a = 255;
@@ -149,6 +166,7 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
     originalW = w;
     originalH = h;
     originalU = unit;
+    textureOffset = offset;
     SDL_SetRenderTarget(renderer, NULL);
     return Tex;
 }
@@ -166,14 +184,12 @@ SDL_Texture* Mandelbrot::RedrawTexture(SDL_Renderer* renderer, std::complex<long
 }
 
 int Mandelbrot::CalculateIterations(std::complex<long double> c){
-    std::complex<long double> Z;
-    long double distance = 0;
+    std::complex<long double> Z = Zzero;
     std::complex<long double> Zn = Zzero;
     int n = 0;
-    for( n = 0; n <= MAX_ITERATIONS && distance < 2; n++){
-        Z = pow(Zn, 2) +c;
-        distance = sqrt(pow(Z.real() , 2 ) + pow(Z.imag() - Zzero.imag() , 2));
-        Zn = Z;
+    for( n = 0; n <= MAX_ITERATIONS && std::abs(Z) < 2; n++){
+        Z = Z * Z +c;
+
     }
 //
     if(!(n < MAX_ITERATIONS )){
@@ -187,10 +203,11 @@ int Mandelbrot::CalculateIterations(std::complex<long double> c){
     return n;
 }
 
-void Mandelbrot::offsetToMousePos(){
-    int x,y;
+void Mandelbrot::offsetToMousePos(SDL_Window* window){
+    int x,y,winW,winH;
     SDL_GetMouseState(&x,&y);
-    std::complex<long double> temp((double)x / screen.w * 2 * w * unit - w  * unit+ offset.real(), (double)y / - screen.h * 2 * h * unit + h * unit + offset.imag());
+    SDL_GetWindowSize(window, &winW,&winH);
+    std::complex<long double> temp((double)x / winW * 2 * w * unit - w  * unit+ offset.real(), (double)y / - winH * 2 * h * unit + h * unit + offset.imag());
     offset = temp;
 //    std::cout << w << "  " << (double)x/ screen.w * w << "  " << screen.w <<"  " << x << "\n" ;
     std::cout << temp.real() << "  " << temp.imag() << "\n";
@@ -198,50 +215,41 @@ void Mandelbrot::offsetToMousePos(){
 }
 
 SDL_Texture* Mandelbrot::zoom(long double percent, SDL_Renderer* renderer){
-//    int tempW = w;
-//    int tempH = h;
-//    w = w * percent;
-//    h =  (long double)w* screen.h / screen.w;
-//    std::cout << "ratio after:  " << (double)h/w<< "\n";
-//    long double iw = (long double)tempW/unit;
-//
-//    iterations.clear();
-//    std::vector<long int> temp2(2*h);
-//    for(int x = 0; x < 2*w; x++){
-//        iterations.push_back(temp2);
-//    }
-//
-//
 
     SDL_Texture* returnTex = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,2 * w, 2 * h);
     SDL_SetRenderTarget(renderer, returnTex);
     SDL_RenderClear(renderer);
-    if(unit * percent < originalU){
-        unit = unit*percent;
 
+    unit = unit*percent;
+    SDL_Rect SrcR = {w - w * unit / originalU,h - h * unit / originalU,2 * w * unit / originalU, 2* h / originalU * unit};//{(tempW - w)/2,(tempH - h)/2,w, h};
+    std::cout << unit << "\n";
 
-        SDL_Rect SrcR = {w - w * unit / originalU,h - h * unit / originalU,2 * w * unit / originalU, 2* h / originalU * unit};//{(tempW - w)/2,(tempH - h)/2,w, h};
-        std::cout << unit << "\n";
-        SDL_RenderCopy(renderer, Tex, &SrcR, NULL);}
-    else{
-        unit = unit * percent;
-        Tex = DrawTexture(renderer);
+    if(unit > originalU){//If zooming out so that the resulting image is bigger than the current one, Do this:
+//        returnTex = DrawTexture(renderer);
+        int width = (double)w / ( unit / originalU/2);
+        int height = (double)h / (unit / originalU/2);
+        SDL_Rect DestR = {w -  0.5 * width,h -  0.5 * height, width, height};
+        SDL_RenderCopy(renderer,Tex,NULL, &DestR);
     }
-
-
+    else{
+        SDL_RenderCopy(renderer, Tex, &SrcR, NULL);
+    }
     SDL_SetRenderTarget(renderer, NULL);
 
-   // returnTex = DrawTexture(renderer);
+//    returnTex = DrawTexture(renderer);
     return returnTex;
 }
 
 void Mandelbrot::increaseRes(double percent){
-    std::cout << "ljadlfj";
     long double tempW = w * unit;
     long double tempH = h * unit;
     unit = unit * percent;
     w = tempW / unit;
     h = tempH / unit;
+    if(screen.w < w){
+        w = screen.w;
+        h = screen.h;
+    }
     iterations.clear();
     std::vector<long int> temp2(2*h);
     for(int x = 0; x < 2*w; x++){
@@ -250,8 +258,24 @@ void Mandelbrot::increaseRes(double percent){
     std::cout << "w:" << w << "unit:" << unit << "\n";
 }
 
-void Mandelbrot::modifyPrecision(long double percent){
+void Mandelbrot::modifyPrecision( long double percent){
     MAX_ITERATIONS = MAX_ITERATIONS * percent;
     std::vector<long int> temp(MAX_ITERATIONS);
     Histogram = temp;
+}
+/*
+*Moves the offset by nx and ny. and returns a texture with offset as centerpoint.
+*
+*
+**/
+SDL_Texture* Mandelbrot::moveOffset(SDL_Renderer* renderer,long double nX, long double nY){
+    std::complex<long double> temp(unit * nX, unit * nY);
+    offset += temp;
+    SDL_Rect DestR = {(textureOffset.real() - offset.real()) / unit , (textureOffset.imag() - offset.imag()) / unit  , 2 * w , 2 * h};
+    SDL_Texture* returnTexture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,2 * w, 2 * h);
+    SDL_SetRenderTarget(renderer, returnTexture);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer,Tex,NULL,&DestR);
+    SDL_SetRenderTarget(renderer,NULL);
+    return returnTexture;
 }

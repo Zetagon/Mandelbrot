@@ -23,15 +23,21 @@ class Mandelbrot
         void modifyPrecision(long double percent);
         SDL_Rect screen;
         int CalculateIterations(std::complex<long double> c);
-        void offsetToMousePos();
+        void offsetToMousePos(SDL_Window* window);
         SDL_Texture* zoom(long double percent, SDL_Renderer* renderer);
         void increaseRes(double percent);
+        SDL_Texture* moveOffset(SDL_Renderer* renderer,long double nX, long double nY);
+
+        SDL_Texture* OrbitTrap(SDL_Renderer* renderer);//Renders a texture like DrawTexture() but using the orbittrap rendering technique
+        std::complex<long double> orbitTrapPoint;
 
         long double precision;
         int resolution;
         SDL_Texture* Tex;
         std::complex<long double> Zzero;
         std::complex<long double> offset;
+        std::complex<long double> textureOffset;
+
         int MAX_ITERATIONS;
         std::vector<long int> Histogram;
         std::vector<std::vector<long int>> iterations;
