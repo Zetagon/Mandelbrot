@@ -64,23 +64,12 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
         }
     }
     int highestIteration = MAX_ITERATIONS;
-//    int i = MAX_ITERATIONS - 1;
-//    while(Histogram.at(i) = 0 && i > 0){
-//        i -= 1;
-//    }
-//    std::cout << "i is:" << i;
-//    std::cout << "i is:" << Histogram.at(MAX_ITERATIONS - 2);
-//    std::cout << "max is:" << MAX_ITERATIONS;
-//    highestIteration = i;
     std::vector<int> bandlimits;
     bandlimits.push_back(1);//will always be 1
-//    bandlimits.push_back(MAX_ITERATIONS * 0.24);
     bandlimits.push_back(highestIteration * 0.16);
     bandlimits.push_back(highestIteration * 0.42);
     bandlimits.push_back(highestIteration * 0.6425);
     bandlimits.push_back(highestIteration * 0.8575);
-//    bandlimits.push_back(highestIteration * 0.8);
-//    bandlimits.push_back(highestIteration * 0.9);
     bandlimits.push_back(highestIteration);
     std::vector<long double> percents(MAX_ITERATIONS);
     for(int a = 1; a < bandlimits.size(); a++){
@@ -96,27 +85,6 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
         }
     }
 
-//    int band_total = 0;
-//    for(int i = 1; i < MAX_ITERATIONS * 0.5; i++){
-//        band_total += Histogram.at(i);
-//    }
-//    int running_total = 0;
-//    std::vector<long double> percents(MAX_ITERATIONS);
-//    for (int i = 2; i < MAX_ITERATIONS * 0.5; i++){
-//        running_total += Histogram.at(i);
-//        percents.at(i) = (long double)running_total/band_total;
-//    }
-//
-//    band_total = 0;
-//    for(int i = MAX_ITERATIONS * 0.5; i < MAX_ITERATIONS; i++){
-//        band_total += Histogram.at(i);
-//    }
-//     running_total = 0;
-//
-//    for (int i = MAX_ITERATIONS * 0.5 +1 ; i < MAX_ITERATIONS; i++){
-//        running_total += Histogram.at(i);
-//        percents.at(i) = (long double)running_total/band_total;
-//    }
     std::vector<int> rValue;
     std::vector<int> gValue;
     std::vector<int> bValue;

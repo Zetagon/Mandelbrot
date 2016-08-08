@@ -28,6 +28,10 @@ class Mandelbrot
         void increaseRes(double percent);
         SDL_Texture* moveOffset(SDL_Renderer* renderer,long double nX, long double nY);
 
+        SDL_Surface* DrawSurface();
+        SDL_Surface* ZoomSurface(long double percent,SDL_Surface* surface);
+        void genVideo(int frames,SDL_Renderer* renderer);
+
         SDL_Texture* OrbitTrap(SDL_Renderer* renderer);//Renders a texture like DrawTexture() but using the orbittrap rendering technique
         std::complex<long double> orbitTrapPoint;
 

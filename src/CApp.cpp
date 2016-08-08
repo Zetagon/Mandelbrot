@@ -166,6 +166,9 @@ void CApp::OnDefault(){
                 }
                 SDL_Delay(200);
             }
+            if(keystates[SDL_SCANCODE_V]){
+                brot.genVideo(5,Main_Renderer);
+            }
             if(keystates[SDL_SCANCODE_SPACE]){
                 brot.offsetToMousePos(window);
                 if(useOrbitTrap)
