@@ -1,13 +1,19 @@
 #include "Mandelbrot.h"
 #include <fstream>
-
+#include <string>
+#include <sstream>
+template < typename T > std::string to_string(const T& n){
+    std::ostringstream stm;
+    stm << n;
+    return stm.str();
+}
 void Mandelbrot::genVideo(int frames,SDL_Renderer* renderer){
 
     SDL_Surface* surface;
     for(int i = frames; i > 0; i--){
         surface = DrawSurface();
 
-        std::string filename= "videoFile" + std::to_string(i);
+        std::string filename= "videoFile" + to_string(i);
         std::fstream my_stream;
         my_stream.open(filename.c_str(),std::fstream::binary | std::fstream::in | std::fstream::out|std::fstream::trunc);
         my_stream.close();

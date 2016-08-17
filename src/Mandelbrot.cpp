@@ -6,16 +6,12 @@ Mandelbrot::Mandelbrot(long double width,
                         long double pResolution,
                         long double pPrecision,
                         SDL_Renderer* renderer,
-                        std::complex<long double> pZzero,
                         std::complex<long double> pOffset)
 {
     //ctor
-    resolution = pResolution;
-    precision = pPrecision;
-    MAX_ITERATIONS = pow(10 , precision);
+    MAX_ITERATIONS = pPrecision;
     std::vector<long int> temp(MAX_ITERATIONS);
     Histogram = temp;
-    Zzero = pZzero;
     unit = pResolution;//(double)1/(pow(10,resolution));
     originalU = unit;
     mathematicalW = width;
@@ -41,6 +37,10 @@ Mandelbrot::~Mandelbrot()
 {
     //dtor
     SDL_DestroyTexture(Tex);
+}
+
+SDL_Texture* Mandelbrot::getTexture(){
+    return Tex;
 }
 
 SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
@@ -140,20 +140,10 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
 }
 
 
-SDL_Texture* Mandelbrot::RedrawTexture(SDL_Renderer* renderer, std::complex<long double> pOffset, long double pResolution, int pWidth){
-    offset = pOffset;
-    resolution  = pResolution;
-    unit = 1/(pow(10,resolution));
 
-    w = pWidth/unit;
-    std::cout << "offset:" << offset << "\nresolution" << resolution << "\nwidth:" << w;
-    return DrawTexture(renderer);
-
-}
 
 int Mandelbrot::CalculateIterations(std::complex<long double> c){
-    std::complex<long double> Z = Zzero;
-    std::complex<long double> Zn = Zzero;
+    std::complex<long double> Z(0,0);
     int n = 0;
     for( n = 0; n <= MAX_ITERATIONS && std::abs(Z) < 2; n++){
         Z = Z * Z +c;

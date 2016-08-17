@@ -1,11 +1,10 @@
 #ifndef MANDELBROT_H
 #define MANDELBROT_H
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <complex>
 #include <cmath>
 #include <vector>
-
-
+#include <memory>
 class Mandelbrot
 {
     public:
@@ -14,12 +13,11 @@ class Mandelbrot
                     long double pResolution,
                     long double pPrecision,
                     SDL_Renderer* renderer,
-                    std::complex<long double> pZzero,
                     std::complex<long double> pOffset);
 
         virtual ~Mandelbrot();
+        SDL_Texture* getTexture();
         SDL_Texture* DrawTexture(SDL_Renderer* renderer);
-        SDL_Texture* RedrawTexture(SDL_Renderer* renderer, std::complex<long double> pOffset, long double pResolution,int pWidth);
         void modifyPrecision(long double percent);
         SDL_Rect screen;
         int CalculateIterations(std::complex<long double> c);
@@ -28,17 +26,20 @@ class Mandelbrot
         void increaseRes(double percent);
         SDL_Texture* moveOffset(SDL_Renderer* renderer,long double nX, long double nY);
 
+        //Functions that the video generation part of the program uses
         SDL_Surface* DrawSurface();
         SDL_Surface* ZoomSurface(long double percent,SDL_Surface* surface);
         void genVideo(int frames,SDL_Renderer* renderer);
+        void CreateKeyFrame(SDL_Renderer* renderer);
+
+        //Variables that the video generation part of the program uses
+        std::vector<std::unique_ptr<Mandelbrot>> keyStates;
 
         SDL_Texture* OrbitTrap(SDL_Renderer* renderer);//Renders a texture like DrawTexture() but using the orbittrap rendering technique
         std::complex<long double> orbitTrapPoint;
 
-        long double precision;
-        int resolution;
+
         SDL_Texture* Tex;
-        std::complex<long double> Zzero;
         std::complex<long double> offset;
         std::complex<long double> textureOffset;
 
