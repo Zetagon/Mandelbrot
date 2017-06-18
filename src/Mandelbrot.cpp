@@ -56,10 +56,10 @@ SDL_Texture* Mandelbrot::DrawTexture(SDL_Renderer* renderer){
 
     for(int x = -w; x < w; x++){
         for(int y = -h; y < h; y++){
-            std::complex<long double> temp(x*unit + offset.real(), y*unit + offset.imag());
-            c = temp;
+            long double c_real = x*unit + offset.real();
+            long double c_imag = y*unit + offset.imag();
 
-            int n = CalculateIterations(c);
+            int n = CalculateIterations(c_real, c_imag);
             iterations.at(x + w).at(y + h) = n;
         }
     }
@@ -183,13 +183,20 @@ SDL_Texture* Mandelbrot::RedrawTexture(SDL_Renderer* renderer, std::complex<long
 
 }
 
-int Mandelbrot::CalculateIterations(std::complex<long double> c){
-    std::complex<long double> Z = Zzero;
-    std::complex<long double> Zn = Zzero;
+int Mandelbrot::CalculateIterations(long double c_real, long double c_imag){
+    long double Z_real = 0;
+    long double Z_imag = 0;
+    long double Z_real_squared = Z_real * Z_real;
+    long double Z_imag_squared = Z_imag * Z_imag;
+    long double Z_real_temp = 0;
     int n = 0;
-    for( n = 0; n <= MAX_ITERATIONS && Z.real() * Z.real() + Z.imag() * Z.imag()  < 4; n++){
-        Z = Z * Z +c;
 
+    for( n = 0; n <= MAX_ITERATIONS &&  Z_real_squared + Z_imag_squared < 4; n++){
+        Z_real_temp = Z_real;
+        Z_real = Z_real_squared - Z_imag_squared + c_real;
+        Z_imag = 2 * Z_real_temp * Z_imag + c_imag;
+        Z_real_squared = Z_real * Z_real;
+        Z_imag_squared = Z_imag * Z_imag;
     }
 //
     if(!(n < MAX_ITERATIONS )){

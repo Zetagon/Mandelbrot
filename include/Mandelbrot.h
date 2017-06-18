@@ -22,7 +22,7 @@ class Mandelbrot
         SDL_Texture* RedrawTexture(SDL_Renderer* renderer, std::complex<long double> pOffset, long double pResolution,int pWidth);
         void modifyPrecision(long double percent);
         SDL_Rect screen;
-        int CalculateIterations(std::complex<long double> c);
+        int CalculateIterations(long double c_real, long double c_imag);
         void offsetToMousePos(SDL_Window* window);
         SDL_Texture* zoom(long double percent, SDL_Renderer* renderer);
         void increaseRes(double percent);
