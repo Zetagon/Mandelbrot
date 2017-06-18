@@ -187,7 +187,7 @@ int Mandelbrot::CalculateIterations(std::complex<long double> c){
     std::complex<long double> Z = Zzero;
     std::complex<long double> Zn = Zzero;
     int n = 0;
-    for( n = 0; n <= MAX_ITERATIONS && std::abs(Z) < 2; n++){
+    for( n = 0; n <= MAX_ITERATIONS && Z.real() * Z.real() + Z.imag() * Z.imag()  < 4; n++){
         Z = Z * Z +c;
 
     }
