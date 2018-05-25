@@ -40,11 +40,14 @@
 		<Unit filename="src/CApp.cpp" />
 		<Unit filename="src/CApp.h" />
 		<Unit filename="src/CApp_HandleInput.cpp" />
+		<Unit filename="src/CApp_Rendering.cpp" />
 		<Unit filename="src/Mandelbrot.cpp" />
 		<Unit filename="src/Mandelbrot.h" />
 		<Unit filename="src/Mandelbrot_CreateKeyFrame.cpp" />
 		<Unit filename="src/Mandelbrot_DrawSurface.cpp" />
 		<Unit filename="src/Mandelbrot_GenVideo.cpp" />
+		<Unit filename="src/Mandelbrot_Keyframe.cpp" />
+		<Unit filename="src/Mandelbrot_Keyframe.h" />
 		<Unit filename="src/Mandelbrot_OrbitTrap.cpp" />
 		<Unit filename="src/Mandelbrot_ZoomSurface.cpp" />
 		<Extensions>

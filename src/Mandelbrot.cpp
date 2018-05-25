@@ -146,7 +146,7 @@ int Mandelbrot::CalculateIterations(std::complex<long double> c){
     std::complex<long double> Z(0,0);
     int n = 0;
     for( n = 0; n <= MAX_ITERATIONS && std::abs(Z) < 2; n++){
-        Z = Z * Z +c;
+        Z = Z * Z  +c;
 
     }
 //
@@ -179,7 +179,10 @@ SDL_Texture* Mandelbrot::zoom(long double percent, SDL_Renderer* renderer){
     SDL_RenderClear(renderer);
 
     unit = unit*percent;
-    SDL_Rect SrcR = {w - w * unit / originalU,h - h * unit / originalU,2 * w * unit / originalU, 2* h / originalU * unit};//{(tempW - w)/2,(tempH - h)/2,w, h};
+    SDL_Rect SrcR = {w - w * unit / originalU,
+                     h - h * unit / originalU,
+                     2 * w * unit / originalU,
+                     2* h / originalU * unit};
     std::cout << unit << "\n";
 
     if(unit > originalU){//If zooming out so that the resulting image is bigger than the current one, Do this:

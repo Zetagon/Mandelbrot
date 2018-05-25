@@ -5,6 +5,7 @@
 #include <cmath>
 #include <vector>
 #include <memory>
+#include "Mandelbrot_Keyframe.h"
 class Mandelbrot
 {
     public:
@@ -33,7 +34,7 @@ class Mandelbrot
         void CreateKeyFrame(SDL_Renderer* renderer);
 
         //Variables that the video generation part of the program uses
-        std::vector<std::unique_ptr<Mandelbrot>> keyStates;
+        std::vector<std::unique_ptr<Mandelbrot_Keyframe>> keyFrames;
 
         SDL_Texture* OrbitTrap(SDL_Renderer* renderer);//Renders a texture like DrawTexture() but using the orbittrap rendering technique
         std::complex<long double> orbitTrapPoint;
@@ -57,7 +58,7 @@ class Mandelbrot
         int h;
         long double mathematicalW;
         long double mathematicalH;
-        long double unit;
+        long double unit;//the size of the steps taken when choosing points for the Mandelbrot set
     protected:
     private:
 };

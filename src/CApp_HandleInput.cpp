@@ -53,7 +53,7 @@ void CApp::HandleInput(){
         SDL_Delay(200);
     }
 
-    double zoomModifier = 1.02;
+    double zoomModifier = 1.002;
     if(keystates[SDL_SCANCODE_UP]){
         while(keystates[SDL_SCANCODE_UP]){
             Tex = brot->zoom(1/zoomModifier, Main_Renderer);
@@ -72,6 +72,15 @@ void CApp::HandleInput(){
 
     }
     if(keystates[SDL_SCANCODE_DOWN]){
+            std::complex<long double> offset(0,0);
+            long double p = 50;
+
+            long double resolution = 0.01;//1/(pow(10,resolution));
+            long double width = 2;//M0.000000000051299;
+            long double height = (double)screen.h / screen.w * width;
+            std::unique_ptr<Mandelbrot> temp(new Mandelbrot(width, height, resolution,p,Main_Renderer,offset));
+            brot = std::move(temp);
+            Tex = brot->DrawTexture(Main_Renderer);
         while(keystates[SDL_SCANCODE_DOWN]){
             Tex = brot->zoom(zoomModifier, Main_Renderer);
 
@@ -82,7 +91,6 @@ void CApp::HandleInput(){
 
             SDL_PumpEvents();
         }
-        std::cout << "down";
         if(useOrbitTrap)
             Tex = brot->OrbitTrap(Main_Renderer);
         else
@@ -111,6 +119,11 @@ void CApp::HandleInput(){
     }
     if(keystates[SDL_SCANCODE_V]){
         brot->genVideo(5,Main_Renderer);
+    }
+
+    if(keystates[SDL_SCANCODE_K]){
+        brot->CreateKeyFrame(Main_Renderer);
+        SDL_Delay(300);
     }
     if(keystates[SDL_SCANCODE_SPACE]){
         brot->offsetToMousePos(window);
