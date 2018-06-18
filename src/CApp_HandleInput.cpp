@@ -133,6 +133,9 @@ void CApp::HandleInput(){
             Tex = brot->DrawTexture(Main_Renderer);
         SDL_Delay(500);
     }
+    if(keystates[SDL_SCANCODE_I]){
+      brot->saveBMP(Main_Renderer);
+    }
 
     SDL_PumpEvents();
 }

@@ -36,6 +36,9 @@
 			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add option="-lSDL2" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="src/CApp.cpp" />
 		<Unit filename="src/CApp.h" />
@@ -49,6 +52,7 @@
 		<Unit filename="src/Mandelbrot_Keyframe.cpp" />
 		<Unit filename="src/Mandelbrot_Keyframe.h" />
 		<Unit filename="src/Mandelbrot_OrbitTrap.cpp" />
+		<Unit filename="src/Mandelbrot_SaveBMP.cpp" />
 		<Unit filename="src/Mandelbrot_ZoomSurface.cpp" />
 		<Extensions>
 			<code_completion />

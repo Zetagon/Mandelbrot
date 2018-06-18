@@ -8,7 +8,7 @@
 	"Mandelbrot.h"
 	<memory>
 
-1529313527 /home/leo/Documents/MandelbrotGit/src/Mandelbrot.h
+1529315506 /home/leo/Documents/MandelbrotGit/src/Mandelbrot.h
 	<SDL.h>
 	<SDL2/SDL.h>
 	<complex>
@@ -19,11 +19,11 @@
 
 1529313186 /home/leo/Documents/MandelbrotGit/src/Mandelbrot_Keyframe.h
 
-1529313186 source:/home/leo/Documents/MandelbrotGit/src/CApp.cpp
+1529316494 source:/home/leo/Documents/MandelbrotGit/src/CApp.cpp
 	"CApp.h"
 	<iostream>
 
-1529313186 source:/home/leo/Documents/MandelbrotGit/src/CApp_HandleInput.cpp
+1529315862 source:/home/leo/Documents/MandelbrotGit/src/CApp_HandleInput.cpp
 	"CApp.h"
 	<iostream>
 
@@ -55,4 +55,11 @@
 
 1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_ZoomSurface.cpp
 	"Mandelbrot.h"
+
+1529315793 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_SaveBMP.cpp
+	"Mandelbrot.h"
+	<fstream>
+	<string>
+	<sstream>
+	<iostream>
 

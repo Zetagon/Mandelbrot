@@ -36,6 +36,7 @@ class Mandelbrot
         SDL_Surface* DrawSurface();
         SDL_Surface* ZoomSurface(long double percent,SDL_Surface* surface);
         void genVideo(int frames,SDL_Renderer* renderer);
+        void saveBMP(SDL_Renderer* renderer);
         void CreateKeyFrame(SDL_Renderer* renderer);
 
         //Variables that the video generation part of the program uses

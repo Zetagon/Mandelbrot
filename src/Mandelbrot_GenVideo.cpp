@@ -53,7 +53,7 @@ void Mandelbrot::genVideo(int frames,SDL_Renderer* renderer){
 //            brot.h = h;
             SDL_Surface* surface = brot.DrawSurface();
             int t = x + framesPerKeyFrame * i;
-            std::string filename= "1\\videoFile" + to_string(t) + ".bmp";
+            std::string filename= "1videoFile" + to_string(t) + ".bmp";
             std::fstream my_stream;
             my_stream.open(filename.c_str(),std::fstream::binary | std::fstream::in | std::fstream::out|std::fstream::trunc);
             my_stream.close();
