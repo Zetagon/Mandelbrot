@@ -1,6 +1,11 @@
 #ifndef CAPP_H
 #define CAPP_H
-#include <SDL.h>
+//#ifdef _WIN32
+//#include <SDL.h>
+//#endif // _WIN32
+//#ifdef __linux
+#include <SDL2/SDL.h>
+//#endif // __linux
 #include "Mandelbrot.h"
 #include <memory>
 class CApp

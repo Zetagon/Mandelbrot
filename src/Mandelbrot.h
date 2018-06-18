@@ -1,6 +1,11 @@
 #ifndef MANDELBROT_H
 #define MANDELBROT_H
+#ifdef _WIN32
 #include <SDL.h>
+#endif // _WIN32
+#ifdef __linux
+#include <SDL2/SDL.h>
+#endif // __linux
 #include <complex>
 #include <cmath>
 #include <vector>

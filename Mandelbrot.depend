@@ -1,0 +1,58 @@
+# depslib dependency file v1.0
+1529313186 source:/home/leo/Documents/MandelbrotGit/main.cpp
+	<iostream>
+	"src/CApp.h"
+
+1529313590 /home/leo/Documents/MandelbrotGit/src/CApp.h
+	<SDL2/SDL.h>
+	"Mandelbrot.h"
+	<memory>
+
+1529313527 /home/leo/Documents/MandelbrotGit/src/Mandelbrot.h
+	<SDL.h>
+	<SDL2/SDL.h>
+	<complex>
+	<cmath>
+	<vector>
+	<memory>
+	"Mandelbrot_Keyframe.h"
+
+1529313186 /home/leo/Documents/MandelbrotGit/src/Mandelbrot_Keyframe.h
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/CApp.cpp
+	"CApp.h"
+	<iostream>
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/CApp_HandleInput.cpp
+	"CApp.h"
+	<iostream>
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/CApp_Rendering.cpp
+	"CApp.h"
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot.cpp
+	"Mandelbrot.h"
+	<iostream>
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_CreateKeyFrame.cpp
+	"Mandelbrot.h"
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_DrawSurface.cpp
+	"Mandelbrot.h"
+
+1529315044 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_GenVideo.cpp
+	"Mandelbrot.h"
+	<fstream>
+	<string>
+	<sstream>
+	<iostream>
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_Keyframe.cpp
+	"Mandelbrot_Keyframe.h"
+
+1529313166 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_OrbitTrap.cpp
+	"Mandelbrot.h"
+
+1529313186 source:/home/leo/Documents/MandelbrotGit/src/Mandelbrot_ZoomSurface.cpp
+	"Mandelbrot.h"
+
